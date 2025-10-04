@@ -4,43 +4,56 @@ using UnityEngine;
 
 public class Counter : MonoBehaviour
 {
+    [SerializeField] private InputReader _inputReader;
+
     public event Action CountChanged;
 
     public int Count {  get; private set; }
 
-    private int _mouseButtonNumber = 0;
     private bool _isEnable = true;
+
+    private void OnEnable()
+    {
+        _inputReader.MouseClick += MouseClick;
+    }
 
     private void Start()
     {
         Count = 0;
-        StartCoroutine(CounterWork());
+        StartCoroutine(Work());
     }
 
-    private void Update()
+    private void MouseClick()
     {
-        if (Input.GetMouseButtonDown(_mouseButtonNumber) && _isEnable == true)
+        if (_isEnable)
         {
             _isEnable = false;
-            StopCoroutine(CounterWork());
+            StopCoroutine(Work());
         }
-        else if (Input.GetMouseButtonDown(_mouseButtonNumber) && _isEnable == false)
+        else
         {
             _isEnable = true;
-            StartCoroutine(CounterWork());
+            StartCoroutine(Work());
         }
     }
 
-    private IEnumerator CounterWork()
+    private IEnumerator Work()
     {
         float delay = 0.5f;
+
+        WaitForSecondsRealtime wait = new WaitForSecondsRealtime(delay);
 
         while (_isEnable == true)
         {
             Count++;
             CountChanged?.Invoke();
 
-            yield return new WaitForSecondsRealtime(delay);
+            yield return wait;
         }
+    }
+
+    private void OnDisable()
+    {
+        _inputReader.MouseClick -= MouseClick;
     }
 }
