@@ -11,14 +11,14 @@ public class CounterView : MonoBehaviour
         _counter.CountChanged += Display;
     }
 
+    private void OnDisable()
+    {
+        _counter.CountChanged -= Display;
+    }
+
     public void Display()
     {
         float count = _counter.Count;
         _text.text = count.ToString("");
-    }
-
-    private void OnDisable()
-    {
-        _counter.CountChanged -= Display;
     }
 }

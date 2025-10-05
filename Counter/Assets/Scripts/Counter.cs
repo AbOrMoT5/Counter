@@ -14,7 +14,7 @@ public class Counter : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputReader.MouseClick += MouseClick;
+        _inputReader.MouseClicked += OnMouseClick;
     }
 
     private void Start()
@@ -23,7 +23,12 @@ public class Counter : MonoBehaviour
         StartCoroutine(Work());
     }
 
-    private void MouseClick()
+    private void OnDisable()
+    {
+        _inputReader.MouseClicked -= OnMouseClick;
+    }
+
+    private void OnMouseClick()
     {
         if (_isEnable)
         {
@@ -50,10 +55,5 @@ public class Counter : MonoBehaviour
 
             yield return wait;
         }
-    }
-
-    private void OnDisable()
-    {
-        _inputReader.MouseClick -= MouseClick;
     }
 }

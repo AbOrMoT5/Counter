@@ -1,18 +1,17 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public class InputReader : MonoBehaviour
 {
-    public event Action MouseClick;
-
     private int _mouseButtonNumber = 0;
 
-    void Update()
+    public event Action MouseClicked;
+
+    private void Update()
     {
         if (Input.GetMouseButtonDown(_mouseButtonNumber))
         {
-            MouseClick?.Invoke();
+            MouseClicked?.Invoke();
         }
     }
 }
